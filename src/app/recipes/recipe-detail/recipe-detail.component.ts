@@ -37,5 +37,4 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
     this.paramsSubscription.unsubscribe();
   }
 
-
 }
