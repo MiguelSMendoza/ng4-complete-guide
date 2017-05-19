@@ -1,10 +1,12 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { Recipe } from './recipe.model';
 import { Ingredient } from '../shared/ingredient.model';
+import { Subject } from "rxjs/Subject";
 
 @Injectable()
 export class RecipeService {
-  
+  recipesChanged = new Subject<Recipe[]>();
+
   private recipes: Recipe[] = [
     new Recipe(1, 'A Test Recipe', 'This is simply a Test', 'https://i.ytimg.com/vi/3ZUFDOHp6Ho/maxresdefault.jpg',
     [
@@ -22,6 +24,30 @@ export class RecipeService {
       new Ingredient('Chicken', 20)
     ])
   ];
+
+  addRecipe(recipe: Recipe) {
+    const id = Math.max.apply(Math, this.recipes.map(function(r){ return r.id; }));
+    recipe.id = id + 1;
+    this.recipes.push(recipe);
+    this.recipesChanged.next(this.recipes.slice());
+  }
+
+  updateRecipe(newRecipe: Recipe) {
+    this.recipes.map(
+      (s, index) => {
+        if (s.id === newRecipe.id) {
+          this.recipes[index] = newRecipe;
+        }
+      }
+    );
+    this.recipesChanged.next(this.recipes.slice());
+  }
+
+  deleteRecipe(id: number) {
+    let index = this.recipes.findIndex(x => x.id === id);
+    this.recipes.splice(index, 1);
+    this.recipesChanged.next(this.recipes.slice());
+  }
 
   getRecipes() {
     return this.recipes.slice();
