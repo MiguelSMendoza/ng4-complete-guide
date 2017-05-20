@@ -1,7 +1,8 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { Recipe } from './recipe.model';
 import { Ingredient } from '../shared/ingredient.model';
-import { Subject } from "rxjs/Subject";
+import { Subject } from 'rxjs/Subject';
+import { DataStorageService } from "app/shared/data-storage.service";
 
 @Injectable()
 export class RecipeService {
@@ -24,6 +25,13 @@ export class RecipeService {
       new Ingredient('Chicken', 20)
     ])
   ];
+
+  constructor() { }
+
+  setRecipes(recipes: Recipe[]) {
+    this.recipes = recipes;
+    this.recipesChanged.next(this.recipes.slice());
+  }
 
   addRecipe(recipe: Recipe) {
     const id = Math.max.apply(Math, this.recipes.map(function(r){ return r.id; }));
