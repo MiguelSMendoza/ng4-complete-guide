@@ -26,30 +26,6 @@ const appRoutes: Routes = [
     component: SigninComponent
   },
   {
-    path: 'recipes',
-    component: RecipesComponent,
-    children: [
-      {
-        path: '',
-        component: RecipeStartComponent
-      },
-      {
-        path: 'new',
-        component: RecipeEditComponent,
-        canActivate: [AuthGuardService]
-      },
-      {
-        path: ':id/edit',
-        component: RecipeEditComponent,
-        canActivate: [AuthGuardService]
-      },
-      {
-        path: ':id',
-        component: RecipeDetailComponent
-      },
-    ]
-  },
-  {
     path: 'shopping-list',
     component: ShoppingListComponent,
     children: [
